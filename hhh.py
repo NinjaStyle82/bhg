@@ -11,13 +11,13 @@ def CheckHeader(headers,search):
         return search+": "+headers[search]
     return False
 
-def RetrieveHeader(target):
+def RetrieveHeaders(target):
     headers = requests.get(target).headers
     return headers
     
 searchlist = ['X-Frame-Options','Content-Security-Policy','Strict-Transport-Security','X-Content-Type-Options','X-XSS-Protection','Referrer-Policy']
 try:
-    headers = RetrieveHeader(args.target)
+    headers = RetrieveHeaders(args.target)
     print "Getting Headers for: "+args.target+"\n"
 except:
     print "Error in retrieving headers, verify your URL is valid"
