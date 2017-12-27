@@ -7,7 +7,7 @@ parser.add_argument('-t','--target',dest='target',type=str,help='target')
 args = parser.parse_args()
 
 def CheckHeader(headers,search):
-    if search in headers:
+    if search.lower() in (h.lower() for h in headers):
         return search+": "+headers[search]
     return False
 
@@ -20,7 +20,7 @@ try:
     headers = RetrieveHeader(args.target)
     print "Getting Headers for: "+args.target+"\n"
 except:
-    raise ValueError('Error retrieving URL, verify your URL is valid')
+    print "Error in retrieving headers, verify your URL is valid"
 for search in searchlist:
     c = CheckHeader(headers,search)
     if c:
