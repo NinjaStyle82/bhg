@@ -1,6 +1,7 @@
 #!/usr/bin/env python2
 import argparse
 import requests
+import sys
 
 parser = argparse.ArgumentParser(description='Check headers for target web site.')
 parser.add_argument('-t','--target',dest='target',type=str,help='target')
@@ -19,8 +20,10 @@ searchlist = ['X-Frame-Options','Content-Security-Policy','Strict-Transport-Secu
 try:
     headers = RetrieveHeaders(args.target)
     print "Getting Headers for: "+args.target+"\n"
-except:
-    print "Error in retrieving headers, verify your URL is valid"
+except Exception as e:
+    print e
+    exit()
+
 for search in searchlist:
     c = CheckHeader(headers,search)
     if c:
