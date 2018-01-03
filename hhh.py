@@ -1,7 +1,6 @@
 #!/usr/bin/env python2
 import argparse
 import requests
-import sys
 
 parser = argparse.ArgumentParser(description='Check headers for target web site.')
 parser.add_argument('-t','--target',dest='target',type=str,help='target')
