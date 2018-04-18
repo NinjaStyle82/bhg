@@ -20,7 +20,8 @@ searchlist = [\
 'Content-Security-Policy',\
 'Strict-Transport-Security',\
 'X-Content-Type-Options',\
-'X-XSS-Protection','Referrer-Policy'\
+'X-XSS-Protection','Referrer-Policy',\
+'Public-Key-Pins'
 ]
 try:
     headers = RetrieveHeaders(args.target)
@@ -34,6 +35,6 @@ for search in searchlist:
     if c:
         print "\033[1m\033[32m[+] \033[0m"+c.strip()+"\033[1m\033[32m (OK)"
     else:
-        print "\033[1m\033[31m[-] \033[0m"+search+":\033[1m\033[31m (Missing)"
+        print "\033[1m\033[31m[-] \033[0m"+search+":\033[1m\033[31m (NOT OK)"
 
 print "\n\033[0mDone."
