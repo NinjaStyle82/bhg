@@ -19,9 +19,9 @@ def RetrieveHeaders(target, verify, username, password):
     if username and password:
         headers = requests.get(target, auth=HTTPBasicAuth(username, password), verify=verify).headers
     else:
-        headers = requests.get(target, verify=verify).headers
+	headers = requests.get(target, verify=verify).headers
     return headers
-
+    
 searchlist = [\
 'X-Frame-Options',\
 'Content-Security-Policy',\
@@ -30,11 +30,11 @@ searchlist = [\
 'X-XSS-Protection','Referrer-Policy'\
 ]
 try:
-    if args.username and args.password:
-        headers = RetrieveHeaders(args.target, args.verify, args.username, args.password)
-    else:
-        headers = RetrieveHeaders(args.target, args.verify, False, False)
-    print "Getting Headers for: "+args.target+"\n"
+	if args.username and args.password:
+		headers = RetrieveHeaders(args.target, args.verify, args.username, args.password)
+	else:
+		headers = RetrieveHeaders(args.target, args.verify, False, False)
+	print "Getting Headers for: "+args.target+"\n"
 except Exception as e:
     print e
     exit()
