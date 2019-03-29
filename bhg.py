@@ -1,26 +1,7 @@
-#!/usr/bin/env python2
 import argparse
+import urllib3
 import requests
-from requests.auth import HTTPBasicAuth
 
-parser = argparse.ArgumentParser(description='Check headers for target web site.')
-parser.add_argument('-t','--target', dest='target', type=str, help='target')
-parser.add_argument('-u','--username', dest='username', type=str, required=False, help='Username for HTTP Basic authentication')
-parser.add_argument('-p','--password', dest='password', type=str, required=False, help='Passsword for HTTP Basic authentication')
-args = parser.parse_args()
-
-def CheckHeader(headers,search):
-    if search.lower() in (h.lower() for h in headers):
-        return search+": "+headers[search]
-    return False
-
-def RetrieveHeaders(target, username, password):
-    if username and password:
-        headers = requests.get(target, auth=HTTPBasicAuth(username, password)).headers
-    else:
-		headers = requests.get(target).headers
-    return headers
-    
 searchlist = [\
 'X-Frame-Options',\
 'Content-Security-Policy',\
@@ -28,21 +9,41 @@ searchlist = [\
 'X-Content-Type-Options',\
 'X-XSS-Protection','Referrer-Policy'\
 ]
-try:
-	if args.username and args.password:
-		 headers = RetrieveHeaders(args.target, args.username, args.password)
-	else:
-		headers = RetrieveHeaders(args.target, False, False)
-	print "Getting Headers for: "+args.target+"\n"
-except Exception as e:
-    print e
-    exit()
 
-for search in searchlist:
-    c = CheckHeader(headers,search)
-    if c:
-        print "\033[1m\033[32m[+] \033[0m"+c.strip()+"\033[1m\033[32m (OK)"
-    else:
-        print "\033[1m\033[31m[-] \033[0m"+search+":\033[1m\033[31m (Missing)"
+def CheckHeader(headers,search):
+    if search.lower() in (h.lower() for h in headers):
+        return search+": "+headers[search]
+    return False
 
-print "\n\033[0mDone."
+def RetrieveHeaders(target):
+	urllib3.disable_warnings()
+	requests.packages.urllib3.util.ssl_.DEFAULT_CIPHERS += 'HIGH:!DH:!aNULL'
+	try:
+    		requests.packages.urllib3.contrib.pyopenssl.DEFAULT_SSL_CIPHER_LIST += 'HIGH:!DH:!aNULL'
+	except AttributeError:
+    		# no pyopenssl support used / needed / available
+    		pass
+	headers = requests.get(target, verify=False).headers
+	return headers
+
+if __name__ == "__main__":
+	parser = argparse.ArgumentParser(description='Check headers for target web site.')
+	parser.add_argument('-t','--target',dest='target',type=str,help='target', required=True)
+	args = parser.parse_args()
+
+	try:
+		print "Getting Headers for: "+args.target+"\n"
+		headers = RetrieveHeaders(args.target)
+	except Exception as e:
+		print e
+    		exit()
+
+	for search in searchlist:
+    		c = CheckHeader(headers,search)
+    		if c:
+        		print "\033[1m\033[32m[+] \033[0m"+c.strip()+"\033[1m\033[32m (OK)"
+    		else:
+        		print "\033[1m\033[31m[-] \033[0m"+search+":\033[1m\033[31m (Missing)"
+
+	print "\n\033[0mDone."
+
