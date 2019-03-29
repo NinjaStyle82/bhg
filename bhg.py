@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import argparse
 import urllib3
 import requests
@@ -32,18 +34,18 @@ if __name__ == "__main__":
 	args = parser.parse_args()
 
 	try:
-		print "Getting Headers for: "+args.target+"\n"
+		print("Getting Headers for: "+args.target+"\n")
 		headers = RetrieveHeaders(args.target)
 	except Exception as e:
-		print e
-    		exit()
+		print(e)
+		exit()
 
 	for search in searchlist:
     		c = CheckHeader(headers,search)
     		if c:
-        		print "\033[1m\033[32m[+] \033[0m"+c.strip()+"\033[1m\033[32m (OK)"
+        		print("\033[1m\033[32m[+] \033[0m"+c.strip()+"\033[1m\033[32m (OK)")
     		else:
-        		print "\033[1m\033[31m[-] \033[0m"+search+":\033[1m\033[31m (Missing)"
+        		print("\033[1m\033[31m[-] \033[0m"+search+":\033[1m\033[31m (Missing)")
 
-	print "\n\033[0mDone."
+	print("\n\033[0mDone.")
 
