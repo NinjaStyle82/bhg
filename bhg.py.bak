@@ -33,19 +33,19 @@ searchlist = [\
 ]
 try:
     if args.username and args.password:
-        headers = RetrieveHeaders(args.target, args.verify, args.username, args.password, args.agent)
+        headers = RetrieveHeaders(args.target, args.verify, args.username, args.password)
     else:
-        headers = RetrieveHeaders(args.target, args.verify, False, False, args.agent)
-    print("Getting Headers for: "+args.target+"\n")
+        headers = RetrieveHeaders(args.target, args.verify, False, False)
+    print "Getting Headers for: "+args.target+"\n"
 except Exception as e:
-    print(e)
+    print e
     exit()
 
 for search in searchlist:
     c = CheckHeader(headers,search)
     if c:
-        print("\033[1m\033[32m[+] \033[0m"+c.strip()+"\033[1m\033[32m (OK)")
+        print "\033[1m\033[32m[+] \033[0m"+c.strip()+"\033[1m\033[32m (OK)"
     else:
-        print("\033[1m\033[31m[-] \033[0m"+search+":\033[1m\033[31m (Missing)")
+        print "\033[1m\033[31m[-] \033[0m"+search+":\033[1m\033[31m (Missing)"
 
-print("\n\033[0mDone.")
+print "\n\033[0mDone."
