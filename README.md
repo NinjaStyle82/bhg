@@ -1,9 +1,7 @@
 # BetterHeaderGetter
 Get HTTP security headers and make them look good.
 
-Usage example:
-bhg.py -t gmail.com
-
+Usage
 ```
 usage: bhg.py [-h] [-t TARGET] [-i] [-u USERNAME] [-p PASSWORD] [-a AGENT]
 
