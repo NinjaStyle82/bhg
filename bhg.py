@@ -27,11 +27,13 @@ def RetrieveHeaders(target, verify, username, password, agent):
         return r.headers
     for h in range(len(r.history)):
         if (target not in r.history[h].headers["Location"]) and (r.history[h].headers["Location"].startswith("/"))==False:
-            print("\033[1m\033[31m[-] \033[0mNot following redirect to: "+r.history[h].headers["Location"]+"\n")
-            return r.history[h].headers
+            print("\033[1m\033[31m[-] \033[0mNot following redirect to: "+r.history[h].headers["Location"])
+            ret = r.history[h].headers
         else:
-            print("\033[1m\033[32m[+] \033[0mFollowed redirect to: "+r.history[len(r.history)-1].headers["Location"]+"\n")
-            return r.headers
+            print("\033[1m\033[32m[+] \033[0mFollowed redirect to: "+r.history[h].headers["Location"])
+            ret = r.headers
+    print("")
+    return ret
 
 searchlist = [\
 'X-Frame-Options',\
