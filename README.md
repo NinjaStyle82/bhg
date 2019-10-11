@@ -21,3 +21,22 @@ optional arguments:
   -a AGENT, --user-agent AGENT
                         User Agent for request
 ```
+
+Output Example
+```
+$ python bhg.py -t https://www.gmail.com
+Getting Headers for: https://www.gmail.com
+
+[-] Not following redirect to: https://www.google.com/gmail/
+[-] Not following redirect to: https://mail.google.com/mail/
+[-] Not following redirect to: https://accounts.google.com/ServiceLogin?service=mail&passive=true&rm=false&continue=https://mail.google.com/mail/&ss=1&scc=1&ltmpl=default&ltmplcache=2&emr=1&osid=1#
+
+[+] X-Frame-Options: SAMEORIGIN (OK)
+[-] Content-Security-Policy: (Missing)
+[-] Strict-Transport-Security: (Missing)
+[+] X-Content-Type-Options: nosniff (OK)
+[+] X-XSS-Protection: 1; mode=block (OK)
+[-] Referrer-Policy: (Missing)
+
+Done.
+```
