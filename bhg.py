@@ -18,11 +18,20 @@ def CheckHeader(headers,search):
 
 def RetrieveHeaders(target, verify, username, password, agent):
     headers = {'User-Agent': agent}
+    print("Getting Headers for: "+args.target+"\n")
     if username and password:
-        headers = requests.get(target, auth=HTTPBasicAuth(username, password), verify=verify, headers=headers).headers
+        r = requests.get(target, auth=HTTPBasicAuth(username, password), allow_redirects=True, verify=verify, headers=headers)
     else:
-        headers = requests.get(target, verify=verify,headers=headers).headers
-    return headers
+        r = requests.get(target, verify=verify, allow_redirects=True, headers=headers)
+    if not r.history:
+        return r.headers
+    for h in range(len(r.history)):
+        if (target not in r.history[h].headers["Location"]) and (r.history[h].headers["Location"].startswith("/"))==False:
+            print("\033[1m\033[31m[-] \033[0mNot following redirect to: "+r.history[h].headers["Location"]+"\n")
+            return r.history[h].headers
+        else:
+            print("\033[1m\033[32m[+] \033[0mFollowed redirect to: "+r.history[len(r.history)-1].headers["Location"]+"\n")
+            return r.headers
 
 searchlist = [\
 'X-Frame-Options',\
@@ -36,7 +45,6 @@ try:
         headers = RetrieveHeaders(args.target, args.verify, args.username, args.password, args.agent)
     else:
         headers = RetrieveHeaders(args.target, args.verify, False, False, args.agent)
-    print("Getting Headers for: "+args.target+"\n")
 except Exception as e:
     print(e)
     exit()
