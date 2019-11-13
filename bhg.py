@@ -4,7 +4,7 @@ import requests
 from requests.auth import HTTPBasicAuth
 
 parser = argparse.ArgumentParser(description='Check headers for target web site.')
-parser.add_argument('-t','--target', dest='target', type=str, help='Target')
+parser.add_argument('-t','--target', dest='target', type=str, help='Target', required=True)
 parser.add_argument('-i','--insecure', dest='verify', action="store_false", default=True, help='Make insecure requests')
 parser.add_argument('-u','--username', dest='username', type=str, required=False, help='Username for HTTP Basic authentication')
 parser.add_argument('-p','--password', dest='password', type=str, required=False, help='Password for HTTP Basic authentication')
