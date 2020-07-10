@@ -32,8 +32,8 @@ def RetrieveHeaders(target, verify, username, password, agent):
         else:
             print("\033[1m\033[32m[+] \033[0mFollowed redirect to: "+r.history[h].headers["Location"])
             ret = r.headers
-    print("")
-    return ret
+        print("")
+        return ret
 
 searchlist = [\
 'X-Frame-Options',\
